@@ -1,7 +1,9 @@
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
-
+const bcrypt = require('bcryptjs');
+const salt = bcrypt.genSaltSync(10);
+const hash = bcrypt.hashSync("B4c0/\/", salt);
 const db = require('./database/dbConfig.js');
 const Users = require('./users/users-model.js');
 
@@ -44,13 +46,26 @@ server.post('/api/login', (req, res) => {
     });
 });
 
-server.get('/api/users', (req, res) => {
-  Users.find()
-    .then(users => {
-      res.json(users);
-    })
-    .catch(err => res.send(err));
-});
+// server.get('/api/users', (req, res) => {
+//   Users.find()
+//     .then(users => {
+//       res.json(users);
+//     })
+//     .catch(err => res.send(err));
+// });
+
+// server.get('/hash', (req, res) => {
+// let { username, password} = req.body;
+// Users.findBy({username})
+// .first()
+// .then(user => {
+//   if (user && bcrypt.compareSync(password, user.password)) {
+//     res.status(200).json({message: `Welcome ${user.username}`})
+//   } else {
+//     res.status.json({message: 'Invalid Credentials'})
+//   }
+// })
+// })
 
 const port = process.env.PORT || 5000;
 server.listen(port, () => console.log(`\n** Running on port ${port} **\n`));
